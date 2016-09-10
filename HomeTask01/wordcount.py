@@ -8,8 +8,7 @@ def read_words(filename):
             words.extend(line.split())
     return words
 
-
-def print_words(filename):
+def count_words(filename):
     words = read_words(filename)
     d = dict()
     ans = []
@@ -19,6 +18,11 @@ def print_words(filename):
         else:
             d[word.lower()] += 1
     ans = list(d.items())
+    
+    return ans
+
+def print_words(filename):
+    ans = count_words(filename)
     ans.sort(key=lambda x: x[0])
     
     for el in ans:        
@@ -26,15 +30,7 @@ def print_words(filename):
 
     
 def print_top(filename):
-    words = read_words(filename)
-    d = dict()
-    ans = []
-    for word in words:
-        if word.lower() not in d:
-            d[word.lower()] = 1
-        else:
-            d[word.lower()] += 1
-    ans = list(d.items())
+    ans = count_words(filename)    
     ans.sort(key=lambda x: x[1], reverse=True)
     
     for i in range(min(20, len(ans))):        

@@ -32,11 +32,7 @@ def linear_merge(lst1, lst2):
             merge_lst.append(lst2[j])
             j += 1
     
-    while i < n:
-        merge_lst.append(lst1[i])
-        i += 1      
-    while j < m:
-        merge_lst.append(lst2[j])
-        j += 1         
+    merge_lst.append(lst1[i:])
+    merge_lst.append(lst1[j:])    
         
     return merge_lst
