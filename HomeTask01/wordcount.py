@@ -1,11 +1,13 @@
 import sys
  
+ 
 def read_words(filename):
     words = []
     with open(filename, "r") as f:
         for line in f:
             words.extend(line.split())
     return words
+
 
 def print_words(filename):
     words = read_words(filename)
@@ -21,6 +23,7 @@ def print_words(filename):
     
     for i in range(len(ans)):        
         print(ans[i][0], ans[i][1])
+
     
 def print_top(filename):
     words = read_words(filename)
