@@ -13,27 +13,27 @@ def print_words(filename):
     words = read_words(filename)
     d = dict()
     ans = []
-    for i in range(len(words)):
-        if d.get(words[i].lower()) == None:
-            d[words[i].lower()] = 1
+    for word in words:
+        if d.get(word.lower()) == None:
+            d[word.lower()] = 1
         else:
-            d[words[i].lower()] += 1
+            d[word.lower()] += 1
     ans = list(d.items())
     ans.sort(key=lambda x: x[0])
     
-    for i in range(len(ans)):        
-        print(ans[i][0], ans[i][1])
+    for el in ans:        
+        print(el[0], el[1])
 
     
 def print_top(filename):
     words = read_words(filename)
     d = dict()
     ans = []
-    for i in range(len(words)):
-        if d.get(words[i].lower()) == None:
-            d[words[i].lower()] = 1
+    for word in words:
+        if d.get(word.lower()) == None:
+            d[word.lower()] = 1
         else:
-            d[words[i].lower()] += 1
+            d[word.lower()] += 1
     ans = list(d.items())
     ans.sort(key=lambda x: x[1], reverse=True)
     

@@ -8,12 +8,11 @@
 # Example input: 'read'
 # Example output: 'reading'
 def verbing(s):
-    res = ''
     n = len(s)
     
     if n >= 3:
         if s[n - 3:] == 'ing':
-            s = s[0:n-3] + 'ly'
+            s = s + 'ly'
         else:
             s += 'ing'
     

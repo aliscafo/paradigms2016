@@ -23,10 +23,8 @@ def linear_merge(lst1, lst2):
     merge_lst = []    
     i, j = 0, 0    
     n, m = len(lst1), len(lst2)
-    lst1.append(float('inf'))
-    lst2.append(float('inf'))
     
-    while i < n or j < m:
+    while i < n and j < m:
         if i < n and lst1[i] <= lst2[j]:
             merge_lst.append(lst1[i])
             i += 1
@@ -34,4 +32,11 @@ def linear_merge(lst1, lst2):
             merge_lst.append(lst2[j])
             j += 1
     
+    while i < n:
+        merge_lst.append(lst1[i])
+        i += 1      
+    while j < m:
+        merge_lst.append(lst2[j])
+        j += 1         
+        
     return merge_lst
