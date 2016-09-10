@@ -14,7 +14,7 @@ def remove_adjacent(lst):
     
     return new_lst
 
- 
+
 # Merge two sorted lists in one sorted list in linear time
 #
 # Example input: [2, 4, 6], [1, 3, 5]
