@@ -14,7 +14,7 @@ def print_words(filename):
     d = dict()
     ans = []
     for word in words:
-        if d.get(word.lower()) == None:
+        if word.lower() not in d:
             d[word.lower()] = 1
         else:
             d[word.lower()] += 1
@@ -30,7 +30,7 @@ def print_top(filename):
     d = dict()
     ans = []
     for word in words:
-        if d.get(word.lower()) == None:
+        if word.lower() not in d:
             d[word.lower()] = 1
         else:
             d[word.lower()] += 1
