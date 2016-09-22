@@ -3,11 +3,12 @@ import os
 import hashlib
 import collections
 
+
 def hash_file(filename):
     with open(filename, "rb") as f:
         res = hashlib.sha1()
         while True:
-            data = f.read(2**10)
+            data = f.read(2**18)
             if not data:
                 break
             res.update(data)
@@ -15,11 +16,18 @@ def hash_file(filename):
 
 
 if __name__ == '__main__':
+    if len(sys.argv) != 2:
+            print('usage: ./02.py dirname')
+            sys.exit(1)    
+     
     dirname = sys.argv[1]
     equal = collections.defaultdict(list)
-    for top, dirs, files in os.walk(dirname):
-        for nm in files:
-            if nm[0] != '.' and nm[0] != '~':
-                equal[hash_file(os.path.join(top, nm))].append(os.path.join(top, nm)) 
     
-    print(*([':'.join(equal[key]) for key in equal if len(equal[key]) > 1]), sep='\n')        
+    for top, _, files in os.walk(dirname):
+        for nm in files:
+            p = os.path.join(top, nm)
+            if nm[0] != '.' and nm[0] != '~' and not os.path.islink(nm):
+                equal[hash_file(p)].append(p) 
+    
+    print(*([':'.join(val) for val in equal.values() if len(val) > 1]), sep='\n')
+
