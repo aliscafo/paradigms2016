@@ -29,5 +29,5 @@ if __name__ == '__main__':
             if nm[0] != '.' and nm[0] != '~' and not os.path.islink(nm):
                 equal[hash_file(p)].append(p) 
     
-    print(*([':'.join(val) for val in equal.values() if len(val) > 1]), sep='\n')
+    print(*[':'.join(val) for val in equal.values() if len(val) > 1], sep='\n')
 
