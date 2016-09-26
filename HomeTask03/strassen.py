@@ -6,6 +6,7 @@ def printMatrix(matrix):
     for line in matrix:
         print(" ".join(map(str,line)))
         
+        
 def strassen(A, B):
     n = len(A)
     if n == 1:
@@ -40,10 +41,10 @@ def strassen(A, B):
 
 if __name__ == '__main__':
     n = int(input())
-    n_power2 = 2 ** int(ceil(log(n,2)))
+    n_power2 = 2 ** int(ceil(log(n, 2)))
     
-    A = numpy.zeros((n_power2, n_power2), dtype = numpy.int)
-    B = numpy.zeros((n_power2, n_power2), dtype = numpy.int)
+    A = numpy.zeros((n_power2, n_power2), dtype=numpy.int)
+    B = numpy.zeros((n_power2, n_power2), dtype=numpy.int)
          
     k = []
     for i in range(n):
