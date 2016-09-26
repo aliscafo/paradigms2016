@@ -35,12 +35,12 @@ def strassen(A, B):
     C21 = M6 + M7
     C22 = M2 - M3 + M5 - M7
     
-    return numpy.vstack((numpy.hstack((C11,C12)), numpy.hstack((C21,C22))))
+    return numpy.vstack((numpy.hstack((C11, C12)), numpy.hstack((C21, C22))))
             
 
 if __name__ == '__main__':
     n = int(input())
-    n_power2 = 2**int(ceil(log(n,2)))
+    n_power2 = 2 ** int(ceil(log(n,2)))
     
     A = numpy.zeros((n_power2, n_power2), dtype = numpy.int)
     B = numpy.zeros((n_power2, n_power2), dtype = numpy.int)
