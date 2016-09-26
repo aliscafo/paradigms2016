@@ -59,12 +59,3 @@ if __name__ == '__main__':
     RES = strassen(A, B)  
     printMatrix(RES[:n, :n])
     
-    
-    
-    
-    
-    
-    
-
-    
-    
