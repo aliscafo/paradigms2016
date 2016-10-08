@@ -96,7 +96,6 @@ class FunctionCall:
         return func.evaluate(call_scope)    
           
           
-
 class Reference:
     def __init__(self, name):
         self.name = name
