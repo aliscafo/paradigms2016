@@ -63,6 +63,7 @@ class Number:
     
     __repr__ = __str__    
 
+
 class Function:
     def __init__(self, args, body):
         self.args = args
@@ -138,7 +139,6 @@ class FunctionCall:
         return func.evaluate(call_scope)    
           
           
-
 class Reference:
     def __init__(self, name):
         self.name = name
@@ -173,6 +173,7 @@ class BinaryOperation:
         
         return Number(operations[self.op](x, y))              
 
+
 class UnaryOperation:
     def __init__(self, op, expr):
         self.op = op
@@ -185,6 +186,7 @@ class UnaryOperation:
                       "-" : lambda x: -x}
         
         return Number(operations[self.op](res))
+
 
 def example():
     parent = Scope()
@@ -200,6 +202,7 @@ def example():
     print('It should print 2: ', end=' ')
     FunctionCall(FunctionDefinition('foo', parent['foo']),
                  [Number(5), UnaryOperation('-', Number(3))]).evaluate(scope)
+
 
 def my_tests():
     abc = Scope()
