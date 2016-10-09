@@ -18,7 +18,44 @@ class Number:
 
     def evaluate(self, scope):
         return self
+        
+    def __add__(self, other):
+        return self.value + other.value
+    
+    def __sub__(self, other):
+        return self.value - other.value
 
+    def __mul__(self, other):
+        return self.value * other.value
+
+    def __truediv__(self, other):
+        return self.value / other.value
+
+    def __mod__(self, other):
+        return self.value % other.value
+    
+    def __lt__(self, other):
+        return self.value < other.value
+        
+    def __le__(self, other):
+        return self.value <= other.value
+
+    def __eq__(self, other):
+        return self.value == other.value
+
+    def __ne__(self, other):
+        return self.value != other.value
+        
+    def __ge__(self, other):
+        return self.value >= other.value
+
+    def __gt__(self, other):
+        return self.value > other.value        
+
+    def __str__(self):
+        return "{}".format(self.value)
+    
+    __repr__ = __str__    
 
 class Function:
     def __init__(self, args, body):
@@ -49,17 +86,16 @@ class Conditional:
         self.if_false = if_false
 
     def evaluate(self, scope):
+        ans = None
+    
         if self.condition.evaluate(scope).value:
-            ans = None
-            for op in self.if_true:
-                ans = op.evaluate(scope)
-            return ans       
+            exprs = self.if_true    
         elif self.if_false is not None:
-            ans = None
-            for op in self.if_false:
-                ans = op.evaluate(scope)
-            return ans    
-        return None    
+            exprs = self.if_false
+            
+        for op in exprs:
+            ans = op.evaluate(scope)
+        return ans    
 
 
 class Print:
@@ -67,7 +103,7 @@ class Print:
         self.expr = expr
 
     def evaluate(self, scope):
-        print(self.expr.evaluate(scope).value, end='\n')
+        print(self.expr.evaluate(scope).value)
         return self.expr.evaluate(scope).value
 
 
@@ -89,13 +125,14 @@ class FunctionCall:
     def evaluate(self, scope):
         func = self.fun_expr.evaluate(scope)
         call_scope = Scope(scope)
-        i = 0        
-        for arg in self.args:
-            call_scope[func.args[i]] = arg.evaluate(scope)
-            i += 1
+        
+        for name, arg in zip(func.args, self.args):
+            call_scope[name] = arg.evaluate(scope)
+        
         return func.evaluate(call_scope)    
           
           
+
 class Reference:
     def __init__(self, name):
         self.name = name
@@ -111,36 +148,23 @@ class BinaryOperation:
         self.rhs = rhs
 
     def evaluate(self, scope):
-        left = self.lhs.evaluate(scope)
-        right = self.rhs.evaluate(scope)
+        x = self.lhs.evaluate(scope)
+        y = self.rhs.evaluate(scope)
         
-        if (self.op == '+'):
-            return Number(left.value + right.value);
-        if (self.op == '-'):
-            return Number(left.value - right.value);
-        if (self.op == '*'):
-            return Number(left.value * right.value);
-        if (self.op == '/'):
-            return Number(left.value / right.value);
-        if (self.op == '%'):
-            return Number(left.value % right.value);
-        if (self.op == '=='):
-            return Number(left.value == right.value);
-        if (self.op == '!='):
-            return Number(left.value != right.value);
-        if (self.op == '<'):
-            return Number(left.value < right.value);
-        if (self.op == '>'):
-            return Number(left.value > right.value);
-        if (self.op == '<='):
-            return Number(left.value <= right.value);
-        if (self.op == '>='):
-            return Number(left.value >= right.value);
-        if (self.op == '&&'):
-            return Number((bool)(left.value and right.value));
-        if (self.op == '||'):
-            return Number((bool)(left.value or right.value));
-        
+        operations = {"+" : lambda x, y: x + y,
+                      "-" : lambda x, y: x - y,
+                      "*" : lambda x, y: x * y,   
+                      "/" : lambda x, y: x / y,
+                      "%" : lambda x, y: x % y,
+                      "==" : lambda x, y: x == y,
+                      "!=" : lambda x, y: x != y,
+                      "<" : lambda x, y: x < y,
+                      ">" : lambda x, y: x > y,
+                      "<=" : lambda x, y: x <= y,
+                      ">=" : lambda x, y: x >= y,
+                      "&&" : lambda x, y: bool(x.value and y.value),  
+                      "||" : lambda x, y: bool(x.value or y.value)}
+        return Number(operations[self.op](x, y))              
 
 class UnaryOperation:
     def __init__(self, op, expr):
@@ -209,6 +233,6 @@ def my_tests():
 
 if __name__ == '__main__':
     #example()
-    #my_tests()
+    my_tests()
     pass        
         
