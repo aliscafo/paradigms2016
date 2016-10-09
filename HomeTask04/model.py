@@ -52,6 +52,12 @@ class Number:
     def __gt__(self, other):
         return self.value > other.value        
 
+    def __not__(self):
+        return not self.value        
+
+    def __neg__(self):
+        return -self.value        
+
     def __str__(self):
         return "{}".format(self.value)
     
@@ -164,6 +170,7 @@ class BinaryOperation:
                       ">=" : lambda x, y: x >= y,
                       "&&" : lambda x, y: bool(x.value and y.value),  
                       "||" : lambda x, y: bool(x.value or y.value)}
+        
         return Number(operations[self.op](x, y))              
 
 class UnaryOperation:
@@ -173,12 +180,11 @@ class UnaryOperation:
 
     def evaluate(self, scope):
         res = self.expr.evaluate(scope) 
-        
-        if (self.op == '-'):
-            return Number(-res.value)
-        if (self.op == '!'):
-            return Number(not res.value)
 
+        operations = {"!" : lambda x: not x,
+                      "-" : lambda x: -x}
+        
+        return Number(operations[self.op](res))
 
 def example():
     parent = Scope()
