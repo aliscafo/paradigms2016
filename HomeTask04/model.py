@@ -8,7 +8,7 @@ class Scope:
     
     def __getitem__(self, key):
         if key not in self.d and self.parent:
-            return self.parent.d[key]
+            return self.parent[key]
         return self.d[key]    
      
 
