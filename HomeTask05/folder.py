@@ -1,5 +1,5 @@
-import yat.model
-import yat.printer
+from yat.model import *
+from yat.printer import *
 
 
 class ConstantFolder:

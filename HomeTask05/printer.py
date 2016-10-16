@@ -1,4 +1,4 @@
-import yat.model
+from yat.model import *
 
 
 class PrettyPrinter:
@@ -32,12 +32,8 @@ class PrettyPrinter:
     def visitFunctionDefinition(self, func):
         print("def " + func.name + "(", end="")
 
-        if len(func.function.args) > 0:
-            print(func.function.args[0], end="")
-        
-        for arg in func.function.args[1:]:
-            print(", " + arg, end="")
-            
+        print(*func.function.args, sep=", ", end="")        
+                    
         print(") {")
         
         self.tabs += 1
@@ -75,17 +71,15 @@ class PrettyPrinter:
         
         self.tabs += 1
 
-        if_tr = []
-        if_tr.extend(cond.if_true)
-        
-        for expr in if_tr:
-            self.visit(expr)
+        if cond.if_true:
+            for expr in cond.if_true:
+                self.visit(expr)
 
         self.tabs -= 1
         
         print("}", end="")
 
-        if cond.if_false:
+        if cond.if_false is not None:
             print(" else {")
             
             self.tabs += 1
@@ -96,3 +90,4 @@ class PrettyPrinter:
             self.tabs -= 1
         
             print("}", end="")
+
