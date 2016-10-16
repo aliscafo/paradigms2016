@@ -1,4 +1,4 @@
-from model import *
+import yat.model
 
 
 class PrettyPrinter:
