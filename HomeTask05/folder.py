@@ -53,6 +53,8 @@ class ConstantFolder:
         for i, arg in enumerate(func.args):
             func.args[i] = arg.accept(self)
             
+        return func     
+            
     def visitConditional(self, cond):
         cond.condition = cond.condition.accept(self)
         
