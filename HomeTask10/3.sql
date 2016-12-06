@@ -1,3 +1,6 @@
-SELECT Name FROM City WHERE Id IN	
-	(SELECT CityId FROM Capital WHERE CountryCode IN
-		(SELECT Code FROM Country WHERE Name == 'Malaysia'));
+SELECT City.Name 
+FROM City
+INNER JOIN Country ON Country.Code = City.CountryCode
+INNER JOIN Capital ON City.Id = Capital.CityId
+WHERE Country.Name = 'Malaysia';
+
