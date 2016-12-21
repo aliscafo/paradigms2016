@@ -15,4 +15,4 @@ install:
 # command to run tests
 script: py.test HomeTask11/test_model.py --cov HomeTask11/model.py -v
 after_success: 
-- coverall
+- coveralls
