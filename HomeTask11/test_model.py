@@ -12,7 +12,8 @@ class TestNumber(unittest.TestCase):
         with patch("sys.stdout", new_callable=StringIO) as mock_out:
             Print(abc["a"]).evaluate(abc)    
             self.assertEqual(mock_out.getvalue(), str(100) + '\n')
-
+            
+            
 @patch("sys.stdout", new_callable=StringIO)
 def check(obj, res, mock_out):
     scope = Scope()
@@ -32,6 +33,7 @@ class TestFunctionDefinition(unittest.TestCase):
         fdef = FunctionDefinition('myfunc', func)
         fdef.evaluate(scope)
         self.assertIs(scope['myfunc'], func)        
+        
 
 class TestScope(unittest.TestCase):
     def test_scope(self):
@@ -51,6 +53,17 @@ class TestScope(unittest.TestCase):
             self.assertEqual(mock_out.getvalue(), str(2) + '\n')
      
      
+class TestConditional(unittest.TestCase):
+    def test_cond(self):
+        condition = Conditional(Number(30), [Number(239), Number(404)],
+                                  [Number(31), Number(1984)])
+        assert check(condition, 404)
+
+        condition = Conditional(Number(0), [Number(123), Number(670)],
+                                [Number(100), Number(1998)])
+        assert check(condition, 1998)   
+  
+     
 class TestBinaryOperation(unittest.TestCase):
     def test_eval(self):    
         
@@ -58,15 +71,16 @@ class TestBinaryOperation(unittest.TestCase):
                   "-" : sub,
                   "*" : mul,   
                   "/" : floordiv,
-                  "%" : mod,
-                  "==" : eq,
+                  "%" : mod}
+                  
+        log_ops = {"==" : eq,
                   "!=" : ne,
                   "<" : lt,
                   ">" : gt,
                   "<=" : le,
                   ">=" : ge,
                   "&&" : lambda x, y: bool(x and y),  
-                  "||" : lambda x, y: bool(x or y)}
+                  "||" : lambda x, y: bool(x or y)}          
         
         
         for a in range(-2, 2):
@@ -75,6 +89,10 @@ class TestBinaryOperation(unittest.TestCase):
                     if b != 0 or (op != '/' and op != '%'):
                         assert check(BinaryOperation(Number(a), op, Number(b)), f(a,b))
 
+        for a in range(-2, 2):
+            for b in range(-2, 2):
+                for op, f in log_ops.items():
+                    assert check(BinaryOperation(Number(a), op, Number(b)), bool(f(a,b)))
 
 class TestUnaryOperation(unittest.TestCase):
     def test_eval(self):    
