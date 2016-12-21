@@ -61,5 +61,15 @@ class TestBinaryOperation(unittest.TestCase):
                         assert check(BinaryOperation(Number(a), op, Number(b)), f(a,b))
 
 
+class TestUnaryOperation(unittest.TestCase):
+    def test_eval(self):    
+        operations = {"!" : not_,
+                      "-" : neg}
+    
+        for a in range(-2, 2):
+            for op, f in operations.items():
+                assert check(UnaryOperation(op, Number(a)), f(a))
+        
+
 if __name__ == '__main__':
     unittest.main()       
