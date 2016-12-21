@@ -29,7 +29,19 @@ class TestScope(unittest.TestCase):
         with patch("sys.stdout", new_callable=StringIO) as mock_out:
             Print(c["foo"]).evaluate(c)    
             self.assertEqual(mock_out.getvalue(), str(2) + '\n')
+ 
+#@patch("sys.stdout", new_callable=StringIO)
+#def check():
+    
+class TestBinaryOperation:
+    def test_mult(self):
+        scope = Scope()
         
+        bin_op = BinaryOperation(Number(100), '+', Number(40))
+        with patch("sys.stdout", new_callable=StringIO) as mock_out:
+            Print(bin_op).evaluate(scope)
+            self.assertEqual(mock_out.getvalue(), str(140) + '\n')
+
 
 if __name__ == '__main__':
     unittest.main()       
