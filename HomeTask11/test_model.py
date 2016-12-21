@@ -21,6 +21,15 @@ class TestScope(unittest.TestCase):
             Print(scope["num"]).evaluate(scope)    
             self.assertEqual(mock_out.getvalue(), str(505) + '\n')
 
+    def test_level(self):
+        a = Scope()
+        a["foo"] = Number(2)
+        b = Scope(a)
+        c = Scope(b)
+        with patch("sys.stdout", new_callable=StringIO) as mock_out:
+            Print(c["foo"]).evaluate(c)    
+            self.assertEqual(mock_out.getvalue(), str(2) + '\n')
+        
 
 if __name__ == '__main__':
     unittest.main()       
