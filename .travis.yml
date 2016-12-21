@@ -1,0 +1,12 @@
+os:
+  - linux
+language: 
+  - python
+python:
+  - "3.2"
+  - "3.3"
+  - "3.4"
+install:
+  - pip3 install pytest
+script:
+  - py.test HomeTask11/test_model.py --cov HomeTask11/model.py -v
