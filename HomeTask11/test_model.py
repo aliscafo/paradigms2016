@@ -33,11 +33,11 @@ class TestScope(unittest.TestCase):
 #@patch("sys.stdout", new_callable=StringIO)
 #def check():
     
-class TestBinaryOperation:
+class TestBinaryOperation(unittest.TestCase):
     def test_mult(self):
         scope = Scope()
         
-        bin_op = BinaryOperation(Number(100), '+', Number(40))
+        bin_op = BinaryOperation(Number(100), '+', Number(40)).evaluate(scope)
         with patch("sys.stdout", new_callable=StringIO) as mock_out:
             Print(bin_op).evaluate(scope)
             self.assertEqual(mock_out.getvalue(), str(140) + '\n')
