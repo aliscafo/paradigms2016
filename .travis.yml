@@ -12,4 +12,4 @@ python:
 # command to install dependencies
 install: "pip install -r requirements.txt"
 # command to run tests
-script: pytest HomeTask11/test_model.py --cov HomeTask11/model.py -v
+script: py.test HomeTask11/test_model.py --cov HomeTask11/model.py -v
