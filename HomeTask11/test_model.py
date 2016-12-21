@@ -63,7 +63,11 @@ class TestConditional(unittest.TestCase):
                                 [Number(100), Number(1998)])
         assert check(condition, 1998)   
   
-     
+        condition = Conditional(Number(0), [Number(123), Number(670)],
+                                [])
+        self.assertIs(condition.evaluate(None), None)   
+  
+    
 class TestBinaryOperation(unittest.TestCase):
     def test_eval(self):    
         
