@@ -155,7 +155,7 @@ class UnaryOperation:
         return Number(self.operations[self.op](res.value))
 
 
-def example():
+'''def example():
     parent = Scope()
     parent["foo"] = Function(('hello', 'world'),
                              [Print(BinaryOperation(Reference('hello'),
@@ -170,7 +170,7 @@ def example():
     FunctionCall(FunctionDefinition('foo', parent['foo']),
                  [Number(5), UnaryOperation('-', Number(3))]).evaluate(scope)
 
-
+'''
 '''def my_tests():
     abc = Scope()
     abc["func"] = Function(('a', 'b'), 

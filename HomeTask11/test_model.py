@@ -9,9 +9,21 @@ class TestNumber(unittest.TestCase):
     def test_number(self):
         abc = Scope()
         abc['a'] = Number(100)                
-        with patch("sys.stdout", new_callable=StringIO) as out_number:
+        with patch("sys.stdout", new_callable=StringIO) as mock_out:
             Print(abc["a"]).evaluate(abc)    
-            self.assertEqual(out_number.getvalue(), str(100) + '\n')
+            self.assertEqual(mock_out.getvalue(), str(100) + '\n')
+
+@patch("sys.stdout", new_callable=StringIO)
+def check(obj, res, mock_out):
+    scope = Scope()
+    Print(obj.evaluate(scope)).evaluate(scope)
+    return (mock_out.getvalue() == (str(res) + '\n')) 
+    
+
+class TestFunction(unittest.TestCase):
+    def test_inst(self):
+        assert check((Function(('hello', 'world'), [Number(5), Number(7)])), 7)       
+          
 
 class TestScope(unittest.TestCase):
     def test_scope(self):
@@ -29,13 +41,8 @@ class TestScope(unittest.TestCase):
         with patch("sys.stdout", new_callable=StringIO) as mock_out:
             Print(c["foo"]).evaluate(c)    
             self.assertEqual(mock_out.getvalue(), str(2) + '\n')
- 
-@patch("sys.stdout", new_callable=StringIO)
-def check(bin_op, res, mock_out):
-    scope = Scope()
-    Print(bin_op.evaluate(scope)).evaluate(scope)
-    return (mock_out.getvalue() == (str(res) + '\n')) 
-    
+     
+     
 class TestBinaryOperation(unittest.TestCase):
     def test_eval(self):    
         
