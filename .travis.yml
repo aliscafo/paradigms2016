@@ -1,13 +1,13 @@
 os:
   - linux
-language:
+language: 
   - python
 python:
+  - "3.2"
+  - "3.3"
   - "3.4"
-  - "3.5"
 install:
-  - pip install -r test_requirements.txt
+  - cd testing
+  - pip install pytest
 script:
-  - py.test model.py --pep8 model.py --cov model.py -v
-after_success:
-  - coveralls
+  - py.test model.py
