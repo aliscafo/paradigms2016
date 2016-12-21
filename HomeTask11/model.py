@@ -1,14 +1,16 @@
+from operator import (add, floordiv, mod, sub, mul, lt, le, not_, gt, ge, ne, eq, neg)
+
 class Scope:
-    d = dict()
     def __init__(self, parent=None):
         self.parent = parent
+        self.d = dict()
     
     def __setitem__(self, key, value):
         self.d[key] = value
     
     def __getitem__(self, key):
         if key not in self.d and self.parent:
-            return self.parent.d[key]
+            return self.parent[key]
         return self.d[key]    
      
 
@@ -18,44 +20,12 @@ class Number:
 
     def evaluate(self, scope):
         return self
-        
-    def __add__(self, other):
-        return self.value + other.value
-    
-    def __sub__(self, other):
-        return self.value - other.value
-
-    def __mul__(self, other):
-        return self.value * other.value
-
-    def __truediv__(self, other):
-        return self.value / other.value
-
-    def __mod__(self, other):
-        return self.value % other.value
-    
-    def __lt__(self, other):
-        return self.value < other.value
-        
-    def __le__(self, other):
-        return self.value <= other.value
-
-    def __eq__(self, other):
-        return self.value == other.value
-
-    def __ne__(self, other):
-        return self.value != other.value
-        
-    def __ge__(self, other):
-        return self.value >= other.value
-
-    def __gt__(self, other):
-        return self.value > other.value        
-
+            
     def __str__(self):
         return "{}".format(self.value)
     
     __repr__ = __str__    
+
 
 class Function:
     def __init__(self, args, body):
@@ -92,7 +62,9 @@ class Conditional:
             exprs = self.if_true    
         elif self.if_false is not None:
             exprs = self.if_false
-            
+        else:
+          return None
+          
         for op in exprs:
             ans = op.evaluate(scope)
         return ans    
@@ -103,8 +75,10 @@ class Print:
         self.expr = expr
 
     def evaluate(self, scope):
-        print(self.expr.evaluate(scope).value)
-        return self.expr.evaluate(scope).value
+        res = self.expr.evaluate(scope)        
+        print(res.value)
+        
+        return res
 
 
 class Read:
@@ -132,7 +106,6 @@ class FunctionCall:
         return func.evaluate(call_scope)    
           
           
-
 class Reference:
     def __init__(self, name):
         self.name = name
@@ -142,6 +115,20 @@ class Reference:
 
 
 class BinaryOperation:
+    operations = {"+" : add,
+                  "-" : sub,
+                  "*" : mul,   
+                  "/" : floordiv,
+                  "%" : mod,
+                  "==" : eq,
+                  "!=" : ne,
+                  "<" : lt,
+                  ">" : gt,
+                  "<=" : le,
+                  ">=" : ge,
+                  "&&" : lambda x, y: bool(x and y),  
+                  "||" : lambda x, y: bool(x or y)}
+        
     def __init__(self, lhs, op, rhs):
         self.lhs = lhs
         self.op = op
@@ -150,23 +137,14 @@ class BinaryOperation:
     def evaluate(self, scope):
         x = self.lhs.evaluate(scope)
         y = self.rhs.evaluate(scope)
-        
-        operations = {"+" : lambda x, y: x + y,
-                      "-" : lambda x, y: x - y,
-                      "*" : lambda x, y: x * y,   
-                      "/" : lambda x, y: x / y,
-                      "%" : lambda x, y: x % y,
-                      "==" : lambda x, y: x == y,
-                      "!=" : lambda x, y: x != y,
-                      "<" : lambda x, y: x < y,
-                      ">" : lambda x, y: x > y,
-                      "<=" : lambda x, y: x <= y,
-                      ">=" : lambda x, y: x >= y,
-                      "&&" : lambda x, y: bool(x.value and y.value),  
-                      "||" : lambda x, y: bool(x.value or y.value)}
-        return Number(operations[self.op](x, y))              
+                
+        return Number(self.operations[self.op](x.value, y.value))              
+
 
 class UnaryOperation:
+    operations = {"!" : not_,
+                  "-" : neg}
+
     def __init__(self, op, expr):
         self.op = op
         self.expr = expr
@@ -174,10 +152,7 @@ class UnaryOperation:
     def evaluate(self, scope):
         res = self.expr.evaluate(scope) 
         
-        if (self.op == '-'):
-            return Number(-res.value)
-        if (self.op == '!'):
-            return Number(not res.value)
+        return Number(self.operations[self.op](res.value))
 
 
 def example():
@@ -194,6 +169,7 @@ def example():
     print('It should print 2: ', end=' ')
     FunctionCall(FunctionDefinition('foo', parent['foo']),
                  [Number(5), UnaryOperation('-', Number(3))]).evaluate(scope)
+
 
 def my_tests():
     abc = Scope()
@@ -233,6 +209,6 @@ def my_tests():
 
 if __name__ == '__main__':
     #example()
-    my_tests()
+    #my_tests()
     pass        
         

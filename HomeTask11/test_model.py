@@ -1,4 +1,4 @@
-import operator
+from operator import (add, floordiv, mod, sub, mul, lt, le, not_, gt, ge, ne, eq, neg)
 import unittest
 from unittest.mock import patch
 from io import *
@@ -30,17 +30,35 @@ class TestScope(unittest.TestCase):
             Print(c["foo"]).evaluate(c)    
             self.assertEqual(mock_out.getvalue(), str(2) + '\n')
  
-#@patch("sys.stdout", new_callable=StringIO)
-#def check():
+@patch("sys.stdout", new_callable=StringIO)
+def check(bin_op, res, mock_out):
+    scope = Scope()
+    Print(bin_op.evaluate(scope)).evaluate(scope)
+    return (mock_out.getvalue() == (str(res) + '\n')) 
     
 class TestBinaryOperation(unittest.TestCase):
-    def test_mult(self):
-        scope = Scope()
+    def test_eval(self):    
         
-        bin_op = BinaryOperation(Number(100), '+', Number(40)).evaluate(scope)
-        with patch("sys.stdout", new_callable=StringIO) as mock_out:
-            Print(bin_op).evaluate(scope)
-            self.assertEqual(mock_out.getvalue(), str(140) + '\n')
+        operations = {"+" : add,
+                  "-" : sub,
+                  "*" : mul,   
+                  "/" : floordiv,
+                  "%" : mod,
+                  "==" : eq,
+                  "!=" : ne,
+                  "<" : lt,
+                  ">" : gt,
+                  "<=" : le,
+                  ">=" : ge,
+                  "&&" : lambda x, y: bool(x and y),  
+                  "||" : lambda x, y: bool(x or y)}
+        
+        
+        for a in range(-2, 2):
+            for b in range(-2, 2):
+                for op, f in operations.items():
+                    if b != 0 or (op != '/' and op != '%'):
+                        assert check(BinaryOperation(Number(a), op, Number(b)), f(a,b))
 
 
 if __name__ == '__main__':
