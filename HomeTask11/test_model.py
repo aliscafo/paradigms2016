@@ -14,7 +14,5 @@ class TestNumber(unittest.TestCase):
             self.assertEqual(out_number.getvalue(), str(100) + '\n')
 
 
-"class Test
-
 if __name__ == '__main__':
     unittest.main()       
