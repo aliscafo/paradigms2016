@@ -1,12 +1,18 @@
-os:
-  - linux
-language: 
-  - python
+language: python
 python:
-  - "3.2"
   - "3.3"
   - "3.4"
-install:
+  - "3.5"
+  - "3.5-dev" # 3.5 development branch
+  - "3.6-dev" # 3.6 development branch
+  - "nightly" # currently points to 3.7-dev
+# command to install dependencies
+install: 
   - pip3 install pytest
-script:
-  - py.test HomeTask11/test_model.py --cov HomeTask11/model.py -v
+  - pip3 install pytest-pep8
+  - pip3 install pytest-cov
+  - pip3 install python-coveralls
+# command to run tests
+script: py.test HomeTask11/test_model.py --cov HomeTask11/model.py -v
+after_success: 
+- coveralls
