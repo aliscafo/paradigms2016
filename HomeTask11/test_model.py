@@ -64,10 +64,18 @@ class TestConditional(unittest.TestCase):
         assert check(condition, 1998)   
   
         condition = Conditional(Number(0), [Number(123), Number(670)],
-                                [])
+                                None)
         self.assertIs(condition.evaluate(None), None)   
   
-    
+ 
+ 
+class TestRead(unittest.TestCase):
+    def test_read(self):
+        scope = Scope()
+        with patch("sys.stdin", new=StringIO("1984")): 
+            assert check(Read('Num'), 1984)
+
+  
 class TestBinaryOperation(unittest.TestCase):
     def test_eval(self):    
         
