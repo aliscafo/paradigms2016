@@ -23,7 +23,15 @@ def check(obj, res, mock_out):
 class TestFunction(unittest.TestCase):
     def test_inst(self):
         assert check((Function(('hello', 'world'), [Number(5), Number(7)])), 7)       
-          
+        
+        
+class TestFunctionDefinition(unittest.TestCase):
+    def test_def(self):
+        scope = Scope()
+        func = Function(('hello', 'world'), [Number(5), Number(7)])
+        fdef = FunctionDefinition('myfunc', func)
+        fdef.evaluate(scope)
+        self.assertIs(scope['myfunc'], func)        
 
 class TestScope(unittest.TestCase):
     def test_scope(self):
