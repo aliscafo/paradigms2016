@@ -171,7 +171,7 @@ def example():
                  [Number(5), UnaryOperation('-', Number(3))]).evaluate(scope)
 
 
-def my_tests():
+'''def my_tests():
     abc = Scope()
     abc["func"] = Function(('a', 'b'), 
                             [Print(BinaryOperation(Reference('a'), 
@@ -205,7 +205,7 @@ def my_tests():
     print('It should print 0 (4 > 6):')                     
     FunctionCall(FunctionDefinition('function4', abc['conditional']),
                 [Number(4), Number(6), Number(1), Number(0)]).evaluate(scope2)  
-                                 
+'''                                 
 
 if __name__ == '__main__':
     #example()
