@@ -75,12 +75,12 @@ class TestConditional(unittest.TestCase):
         Conditional(Number(5), [], []).evaluate(None)   
 
  
-'''class TestRead(unittest.TestCase):
+class TestRead(unittest.TestCase):
     def test_read(self):
         scope = Scope()
         with patch("sys.stdin", new=StringIO("1984")): 
             assert check(Read('Num'), 1984)
-'''
+
 
 @patch("sys.stdout", new_callable=StringIO)
 def check_logic(obj, res, mock_out):
