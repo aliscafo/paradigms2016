@@ -33,7 +33,18 @@ class TestFunctionDefinition(unittest.TestCase):
         fdef = FunctionDefinition('myfunc', func)
         fdef.evaluate(scope)
         self.assertIs(scope['myfunc'], func)        
-        
+
+
+class TestFunctionCall(unittest.TestCase):
+    def test_call(self):
+        abc = Scope()        
+        abc['conditional'] = Function(('a', 'b', 'c', 'd'), 
+                         [Conditional(BinaryOperation(Reference('a'), '>', Reference('b')), 
+                         [Reference('c')], [Reference('d')])])
+        cll = FunctionCall(FunctionDefinition('function4', abc['conditional']),
+                [Number(4), Number(6), Number(1), Number(777)]).evaluate(abc)
+        assert check(cll, 777)
+
 
 class TestScope(unittest.TestCase):
     def test_scope(self):
@@ -75,12 +86,12 @@ class TestConditional(unittest.TestCase):
         Conditional(Number(5), [], []).evaluate(None)   
 
  
-class TestRead(unittest.TestCase):
+'''class TestRead(unittest.TestCase):
     def test_read(self):
         scope = Scope()
         with patch("sys.stdin", new=StringIO("1984")): 
             assert check(Read('Num'), 1984)
-
+'''
 
 @patch("sys.stdout", new_callable=StringIO)
 def check_logic(obj, res, mock_out):

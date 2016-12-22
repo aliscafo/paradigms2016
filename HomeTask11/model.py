@@ -21,10 +21,10 @@ class Number:
     def evaluate(self, scope):
         return self
             
-    def __str__(self):
-        return "{}".format(self.value)
+    #def __str__(self):
+    #    return "{}".format(self.value)
     
-    __repr__ = __str__    
+    #__repr__ = __str__    
 
 
 class Function:
