@@ -64,6 +64,8 @@ class Conditional:
             exprs = self.if_false
         else:
           return None
+        if exprs is None:
+            return None
           
         for op in exprs:
             ans = op.evaluate(scope)
@@ -120,14 +122,14 @@ class BinaryOperation:
                   "*" : mul,   
                   "/" : floordiv,
                   "%" : mod,
-                  "==" : eq,
-                  "!=" : ne,
-                  "<" : lt,
-                  ">" : gt,
-                  "<=" : le,
-                  ">=" : ge,
-                  "&&" : lambda x, y: bool(x and y),  
-                  "||" : lambda x, y: bool(x or y)}
+                  "==" : lambda x, y: 1 if x == y else 0,
+                  "!=" : lambda x, y: 1 if x != y else 0,
+                  "<" : lambda x, y: 1 if x < y else 0,
+                  ">" : lambda x, y: 1 if x > y else 0,
+                  "<=" : lambda x, y: 1 if x <= y else 0,
+                  ">=" : lambda x, y: 1 if x >= y else 0,
+                  "&&" : lambda x, y: x and y,  
+                  "||" : lambda x, y: x or y}
         
     def __init__(self, lhs, op, rhs):
         self.lhs = lhs
@@ -142,7 +144,7 @@ class BinaryOperation:
 
 
 class UnaryOperation:
-    operations = {"!" : not_,
+    operations = {"!" : lambda x: 1 if x == 0 else 0,
                   "-" : neg}
 
     def __init__(self, op, expr):

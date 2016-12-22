@@ -61,19 +61,32 @@ class TestConditional(unittest.TestCase):
 
         condition = Conditional(Number(0), [Number(123), Number(670)],
                                 [Number(100), Number(1998)])
-        assert check(condition, 1998)   
+        assert check(condition, 1998)
+        
+    def test_cond_NoneEmpty(self):
+        Conditional(Number(0), [Number(123), Number(670)],
+                                None).evaluate(None)   
   
-        condition = Conditional(Number(0), [Number(123), Number(670)],
-                                None)
-        self.assertIs(condition.evaluate(None), None)   
+        Conditional(Number(5), None,
+                                None).evaluate(None)   
+ 
+        Conditional(Number(0), [], []).evaluate(None)   
   
+        Conditional(Number(5), [], []).evaluate(None)   
+
  
- 
-class TestRead(unittest.TestCase):
+'''class TestRead(unittest.TestCase):
     def test_read(self):
         scope = Scope()
         with patch("sys.stdin", new=StringIO("1984")): 
             assert check(Read('Num'), 1984)
+'''
+
+@patch("sys.stdout", new_callable=StringIO)
+def check_logic(obj, res, mock_out):
+    scope = Scope()
+    Print(obj.evaluate(scope)).evaluate(scope)
+    return (bool(int(mock_out.getvalue())) == bool(res)) 
 
   
 class TestBinaryOperation(unittest.TestCase):
@@ -85,14 +98,14 @@ class TestBinaryOperation(unittest.TestCase):
                   "/" : floordiv,
                   "%" : mod}
                   
-        log_ops = {"==" : eq,
-                  "!=" : ne,
-                  "<" : lt,
-                  ">" : gt,
-                  "<=" : le,
-                  ">=" : ge,
-                  "&&" : lambda x, y: bool(x and y),  
-                  "||" : lambda x, y: bool(x or y)}          
+        log_ops = {"==" : lambda x, y: 1 if x == y else 0,
+                  "!=" : lambda x, y: 1 if x != y else 0,
+                  "<" : lambda x, y: 1 if x < y else 0,
+                  ">" : lambda x, y: 1 if x > y else 0,
+                  "<=" : lambda x, y: 1 if x <= y else 0,
+                  ">=" : lambda x, y: 1 if x >= y else 0,
+                  "&&" : lambda x, y: x and y,  
+                  "||" : lambda x, y: x or y}          
         
         
         for a in range(-2, 2):
@@ -104,7 +117,7 @@ class TestBinaryOperation(unittest.TestCase):
         for a in range(-2, 2):
             for b in range(-2, 2):
                 for op, f in log_ops.items():
-                    assert check(BinaryOperation(Number(a), op, Number(b)), bool(f(a,b)))
+                    assert check_logic(BinaryOperation(Number(a), op, Number(b)), f(a,b))
 
 class TestUnaryOperation(unittest.TestCase):
     def test_eval(self):    
@@ -113,7 +126,7 @@ class TestUnaryOperation(unittest.TestCase):
     
         for a in range(-2, 2):
             for op, f in operations.items():
-                assert check(UnaryOperation(op, Number(a)), f(a))
+                assert check_logic(UnaryOperation(op, Number(a)), f(a))
         
 
 if __name__ == '__main__':
