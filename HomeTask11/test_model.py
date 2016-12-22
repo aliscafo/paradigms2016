@@ -1,7 +1,7 @@
 from operator import (add, floordiv, mod, sub, mul, lt, le, not_, gt, ge, ne, eq, neg)
 import unittest
 from unittest.mock import patch
-from io import *
+from io import StringIO
 from model import *
     
 
@@ -12,6 +12,24 @@ class TestNumber(unittest.TestCase):
         with patch("sys.stdout", new_callable=StringIO) as mock_out:
             Print(abc["a"]).evaluate(abc)    
             self.assertEqual(mock_out.getvalue(), str(100) + '\n')
+            
+            
+class TestReference(unittest.TestCase):
+    def test_ref(self):
+        abc = Scope()
+        abc["a"] = Reference("sea")
+        abc["sea"] = Number(4)                
+        with patch("sys.stdout", new_callable=StringIO) as mock_out:
+            Print(abc["a"]).evaluate(abc)   
+            self.assertEqual(mock_out.getvalue(), str(4) + '\n')
+
+class TestRead(unittest.TestCase):
+    def test_read(self):
+        scope = Scope()
+        with patch("sys.stdin", new=StringIO("1984\n")), patch("sys.stdout", new_callable=StringIO) as mock_out:
+            num = Read("Num").evaluate(scope)            
+            Print(num).evaluate(scope)    
+            self.assertEqual(mock_out.getvalue(), str(1984) + '\n')
             
             
 @patch("sys.stdout", new_callable=StringIO)
@@ -41,9 +59,15 @@ class TestFunctionCall(unittest.TestCase):
         abc['conditional'] = Function(('a', 'b', 'c', 'd'), 
                          [Conditional(BinaryOperation(Reference('a'), '>', Reference('b')), 
                          [Reference('c')], [Reference('d')])])
-        cll = FunctionCall(FunctionDefinition('function4', abc['conditional']),
+        cll = FunctionCall(FunctionDefinition('function', abc['conditional']),
                 [Number(4), Number(6), Number(1), Number(777)]).evaluate(abc)
         assert check(cll, 777)
+
+    def test_call_empty(self):
+        abc = Scope()        
+        abc['haha'] = Function(('a', 'b', 'c', 'd'), [])
+        FunctionCall(FunctionDefinition('funct', abc['haha']),
+                [Number(4), Number(6), Number(1), Number(777)]).evaluate(abc)
 
 
 class TestScope(unittest.TestCase):
@@ -85,13 +109,6 @@ class TestConditional(unittest.TestCase):
   
         Conditional(Number(5), [], []).evaluate(None)   
 
- 
-'''class TestRead(unittest.TestCase):
-    def test_read(self):
-        scope = Scope()
-        with patch("sys.stdin", new=StringIO("1984")): 
-            assert check(Read('Num'), 1984)
-'''
 
 @patch("sys.stdout", new_callable=StringIO)
 def check_logic(obj, res, mock_out):
