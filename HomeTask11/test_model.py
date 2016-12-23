@@ -23,6 +23,7 @@ class TestReference(unittest.TestCase):
             Print(abc["a"]).evaluate(abc)   
             self.assertEqual(mock_out.getvalue(), str(4) + '\n')
 
+            
 class TestRead(unittest.TestCase):
     def test_read(self):
         scope = Scope()
