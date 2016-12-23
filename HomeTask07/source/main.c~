@@ -9,7 +9,6 @@ int funccmp(const void* val1, const void* val2) {
   return *(int*)val1 - *(int*)val2;
 }
 
-
 void swap(int* a, int *b) {
   int t = *a;
   *a = *b;
