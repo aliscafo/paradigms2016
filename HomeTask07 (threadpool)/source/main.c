@@ -76,9 +76,12 @@ void dfs(task_* task) {
 
 bool check(int* data, int size) {    
   int i;
-  for (i = 0; i < size - 1; i++) 
+  for (i = 0; i < size - 1; i++) {
     if (data[i] > data[i + 1]) 
       return false;
+    /*if (i < 5) printf("%i\n", data[i]);*/
+  }
+
   return true;
 }
 

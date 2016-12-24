@@ -18,7 +18,7 @@ void* taskfunc (void* data) {
     if (node) {
       task_ *task = (task_ *)node;
       pthread_mutex_lock(&task->mutex);
-      task->f((void*)(task->arg));
+      task->f((void*)(task));
       task->completed = true;
       pthread_cond_signal(&task->cond);
       pthread_mutex_unlock(&task->mutex);
