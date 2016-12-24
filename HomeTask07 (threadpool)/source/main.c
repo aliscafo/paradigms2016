@@ -103,14 +103,15 @@ int main (int argc, char** argv) {
   thpool_submit(&pool, main_task);
  
   dfs(main_task);
-/*    
-  if (!check(data, size))
+    
+  if (!check(data, size)) {
+    free(data);
     exit(1); 
+  }
   
   thpool_finit(&pool);
 
   pthread_exit(NULL);  
-*/
 
   free(data);
 

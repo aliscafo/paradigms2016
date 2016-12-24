@@ -67,8 +67,6 @@ void dfs(task_* task) {
 
   thpool_wait(task);
   
-  printf("%i %i\n", task->left->len, task->right->len);
-
   dfs(task->left);
   dfs(task->right);
   free(task->arg);
@@ -105,14 +103,13 @@ int main (int argc, char** argv) {
   thpool_submit(&pool, main_task);
  
   dfs(main_task);
-/*    
+    
   if (!check(data, size))
     exit(1); 
   
   thpool_finit(&pool);
 
   pthread_exit(NULL);  
-*/
 
   free(data);
 
