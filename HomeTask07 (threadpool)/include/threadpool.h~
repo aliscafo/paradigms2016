@@ -8,12 +8,15 @@
 #include "wsqueue.h"
 
 typedef struct ThreadPool {
-  pthread_t* threads;
   wsqueue_ queue;
+  pthread_t* threads;
   size_t num;
 } threadpool_ ;
 
 typedef struct Task {
+  struct list_node* node1;
+  struct list_node* node2;
+
   struct Task* left;
   struct Task* right;
 

@@ -103,7 +103,7 @@ int main (int argc, char** argv) {
   thpool_submit(&pool, main_task);
  
   dfs(main_task);
-    
+
   if (!check(data, size)) {
     free(data);
     exit(1); 
