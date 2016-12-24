@@ -18,6 +18,7 @@ void* taskfunc (void* data) {
     if (node) {
       task_ *task = (task_ *)node;
       pthread_mutex_lock(&task->mutex);
+      task->f((void*)(task->arg));
       task->completed = true;
       pthread_cond_signal(&task->cond);
       pthread_mutex_unlock(&task->mutex);
@@ -40,13 +41,13 @@ task_* task_new(threadpool_* pool, void (*func)(void*), void* args) {
 }
 
 
-void thpool_init(struct ThreadPool *pool, size_t threads_nm) {
+void thpool_init(threadpool_ *pool, size_t threads_nm) {
   int i;
   pool->num = threads_nm;
   pool->threads = (pthread_t*)malloc(sizeof(pthread_t) * threads_nm);
   wsqueue_init(&pool->queue);
   for (i = 0; i < threads_nm; i++)
-    pthread_create(&pool->threads[i], NULL, taskfunc, pool);
+    pthread_create(&pool->threads[i], NULL, taskfunc, &pool->queue);
 }
 
 
@@ -65,11 +66,12 @@ void thpool_wait(struct Task *task) {
 
 
 void thpool_finit(struct ThreadPool *pool) {
+  int i;
   pthread_mutex_lock(&pool->queue.squeue.mutex);
   cont = false;    
   pthread_mutex_unlock(&pool->queue.squeue.mutex);
 
-  for (int i = 0; i < pool->num; i++) 
+  for (i = 0; i < pool->num; i++) 
     pthread_join(pool->threads[i], NULL);
 
   wsqueue_finit(&pool->queue);

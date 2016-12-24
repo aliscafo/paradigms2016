@@ -16,7 +16,7 @@ void swap(int* a, int* b) {
 }
 
 cur_data_* init_cur_data(int* data, int len, int rec, threadpool_* pool) {
-  cur_data_* tsk = malloc(sizeof(cur_data_*));
+  cur_data_* tsk = malloc(sizeof(cur_data_));
   
   tsk->pool = pool;
   tsk->len = len;
@@ -66,6 +66,7 @@ void dfs(task_* task) {
   if (!task) return;
 
   thpool_wait(task);
+  
   dfs(task->left);
   dfs(task->right);
   free(task->arg);
@@ -98,17 +99,20 @@ int main (int argc, char** argv) {
   thpool_init(&pool, size);
 
   task_* main_task = task_new(&pool, sort, (void*)(init_cur_data(data, size, 0, &pool)));
+
   thpool_submit(&pool, main_task);
-  
+ 
   dfs(main_task);
-    
+/*    
   if (!check(data, size))
     exit(1); 
   
   thpool_finit(&pool);
 
-  free(data);
   pthread_exit(NULL);  
+*/
+
+  free(data);
 
   return 0;
 }

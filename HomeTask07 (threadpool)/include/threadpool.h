@@ -14,12 +14,15 @@ typedef struct ThreadPool {
 } threadpool_ ;
 
 typedef struct Task {
-  void (*f)(void *); 
-  void* arg; 
-  
+  struct list_node* node1;
+  struct list_node* node2;
+
   struct Task* left;
   struct Task* right;
 
+  void (*f)(void *); 
+  void* arg; 
+  
   threadpool_* pool;
   bool completed;
   pthread_cond_t cond;
@@ -35,7 +38,7 @@ typedef struct cur_data {
  
 task_* task_new(threadpool_* pool, void (*func)(void*), void* args);
 
-void thpool_init(struct ThreadPool *pool, unsigned threads_nm);
+void thpool_init(struct ThreadPool *pool, size_t threads_nm);
 void thpool_submit(struct ThreadPool *pool, struct Task *task);
 void thpool_wait(struct Task *task);
 void thpool_finit(struct ThreadPool *pool);

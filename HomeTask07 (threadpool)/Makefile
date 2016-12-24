@@ -30,6 +30,6 @@ bin/wsqueue.o: source/wsqueue.c
 	$(CC) -c -I include source/wsqueue.c $(CFLAGS) -o bin/wsqueue.o
 
 clean:
-	rm bin pqsort
+	rm -rf bin pqsort
 
 .PHONY: clean

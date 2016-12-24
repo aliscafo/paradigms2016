@@ -2,7 +2,7 @@ CC      ?= gcc
 CFLAGS  ?= -ansi 
 LDFLAGS ?= -lpthread
 
-all: pqsort bin
+all: bin pqsort
 
 bin:
 	mkdir -p bin
