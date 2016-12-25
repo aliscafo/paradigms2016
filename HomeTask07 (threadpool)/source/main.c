@@ -99,7 +99,7 @@ int main (int argc, char** argv) {
     data[i] = rand();
 
   threadpool_ pool;        
-  thpool_init(&pool, size);
+  thpool_init(&pool, thr_num);
 
   task_* main_task = task_new(&pool, sort, (void*)(init_cur_data(data, size, 0, &pool)));
 
@@ -114,10 +114,9 @@ int main (int argc, char** argv) {
   
   thpool_finit(&pool);
 
-  pthread_exit(NULL);  
-
   free(data);
-
+  
+  pthread_exit(NULL);  
   return 0;
 }
 
