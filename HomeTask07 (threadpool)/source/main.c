@@ -41,9 +41,9 @@ void sort(void* data) {
 
   int l = 0, r = cur_data->len - 1;
 
-  while (l >= r) {
+  while (l <= r) {
     while (cur_data->data[l] < part) l++;
-    while (cur_data->data[l] > part) r--;
+    while (cur_data->data[r] > part) r--;
     if (l <= r)
       swap(&(cur_data->data[l++]), &(cur_data->data[r--]));
   }
